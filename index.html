@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="biggerbox" style="background-image: url(sunnyfrog.jpg)">
+        <div class="search-container">
+            <input id="box" type="text" placeholder="Enter city name">
+            <img id="searchicon" src="icons8-search-50__1_-removebg-preview.png" alt="search"/>
+        </div>
+
+        <div id="weather">
+            <img class='weather-icon'src="sun.png" alt="weather-icon"/>
+            <br>
+            <h class="temp" style="font-style: Arial, sans-serif; font-weight: bold;font-size: 50px">30°C</h>
+            <p class="city" style="font-size: 30px">Pune</p>
+        </div>
+
+        <div id="weather-details">
+            <div class="detail">
+                <img src="https://img.icons8.com/ios/50/humidity.png" alt="Humidity Icon"/>
+                <p style="font-size: 20px;color:chartreuse"><strong class="humidity" style="color:chartreuse; font-size: 30px;">12%</strong><br>Humidity</p>
+            </div>
+            <div class="detail">
+                <img src="https://img.icons8.com/ios/50/wind.png" alt="Wind Speed Icon"/>
+                <p style="font-size: 20px;color:chartreuse" 50px><strong class="wind" style="color:chartreuse; font-size: 30px">2.29 K/h</strong><br>Wind Speed</p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <script>
+        const apikey="e61529127f1b65acc0871495e96038cf"
+        const apiurl="https://api.openweathermap.org/data/2.5/weather?units=metric&q="
+        const searchbox = document.querySelector('.search-container input')
+        const searchbtn = document.querySelector('.search-container img')
+        const weatherrr=document.querySelector(".weather-icon")
+        const bigger=document.querySelector(".biggerbox")
+
+        // https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
+        async function checkWheather(city){
+            const response=await fetch(apiurl+city +`&appid=${apikey}`)
+            var data=await response.json()
+            console.log(data)
+            document.querySelector(".city").innerHTML=data.name;
+            document.querySelector(".temp").innerHTML=data.main.temp+'°C';
+            document.querySelector(".humidity").innerHTML=data.main.humidity+'%';
+            document.querySelector(".wind").innerHTML=data.wind.speed+' K/h';
+
+            if (data.weather[0].main=='Clouds'){
+                weatherrr.src = "cloud.png"
+                bigger.style.backgroundImage = "url('clowdyfrog.jpg')"
+            }
+            else if (data.weather[0].main=='Clear'){
+                bigger.style.backgroundImage = "url('Clearfrog.jpg')"
+            }
+            else if(data.weather[0].main=='Rain'){
+                weatherrr.src = 'rainy.png'
+                bigger.style.backgroundImage = "url('Rainfrog.jpg')"
+            }
+            else if(data.weather[0].main=='Drizzle'){
+                weatherrr.src = 'drizzle.png'
+                bigger.style.backgroundImage = "url('Drizzlefrog.jpg')"
+            }
+            else if(data.weather[0].main=='Mist '){
+                weatherrr.src = 'fog.png'
+                bigger.style.backgroundImage = "url('Hazefrog.jpg')"
+            }
+            else if(data.weather[0].main=='Smoke'){
+                weatherrr.src = 'sun.png'
+                bigger.style.backgroundImage = "url('sunnyfrog.jpg')"
+            }
+            else if(data.weather[0].main=='Snow'){
+                weatherrr.src = 'snowy.png'
+                bigger.style.backgroundImage = "url('Snowfrog.jpg')"
+            }
+            else if(data.weather[0].main=='Rain'){
+                weatherrr.src = 'raining.png'
+                bigger.style.backgroundImage = "url('Rainfrog.jpg')"
+            }
+            else if(data.weather[0].main=='Haze'){
+                weatherrr.src = 'haze.png'
+                bigger.style.backgroundImage = "url('Hazefrog.jpg')"
+        }}
+
+        searchbtn.addEventListener("click",()=>{
+        checkWheather(searchbox.value)
+        })
+        
+    </script>
+</body>
+</html>
